@@ -39,7 +39,7 @@ myMatrix = mymatrix.getMatrix()
 if MATRIX_WIDTH * MATRIX_HEIGHT != len(myMatrix):
   raise Exception("Matrix width x height does not equal length of myMatrix")
 
-def getAnimations(animations):
+def getSprites(animations):
     for (dirpath, dirnames, filenames) in walk(animations) : break
     return filenames
 
@@ -78,7 +78,7 @@ while(True) :
     print ("Timer: ",seccheck - timetrack)
     if (abs(seccheck - timetrack) >= DURATION or seccheck == 0) :
         # After timer runs - Check for new / removed animations icons etc
-        filenames = getAnimations(animations);
+        filenames = getSprites(animations);
         if fidx == len(filenames): fidx = 0 
 
         print("Current Sprite: " + filenames[fidx]);
