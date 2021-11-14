@@ -6,4 +6,4 @@
 |___\___\___/|_| |_| |_|  |_|\__,_|\__|_|  |_/_/\_\
 ```
 # 32 x 32 pixel matrix 
-#### for displaying animated graphics using 4 8x32 WS2812 panels
+#### for displaying animated sprites and graphics using 4 8x32 WS2812 panels
