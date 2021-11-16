@@ -1,0 +1,6 @@
+####################################
+# Example Config file for clock.py #
+####################################
+key=get from https://www.weatherapi.com/my/
+zip=your zipcode
+data=/home/pi/data/
