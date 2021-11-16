@@ -1,4 +1,5 @@
 import time as t
+import json
 from datetime import datetime, time
 import sys, os, re
 from os import walk
@@ -58,6 +59,11 @@ allonecolor(strip, rgbColor(0,0,0))
 # Start creating real-time timers
 now = datetime.now()
 
+# smallfont = ImageFont.truetype('fonts/space-harrier-original.ttf', 8)
+smallfont = ImageFont.truetype('fonts/raster.ttf', 8)
+
+weather = "-"
+
 # And here we go.
 while(True) :
     x = 0;
@@ -66,6 +72,8 @@ while(True) :
     hour = now.strftime("%H")
     min  = now.strftime("%M")
     sec  = now.strftime("%S")
+
+    # build a seconds bar of percent across the top or something
 
     hhmm = now.strftime("%H:%M")
 
@@ -76,19 +84,31 @@ while(True) :
 
     left    = 0,0
     right   = 32,32
-    d1.ellipse([left, right], fill = (130,130,130))
+    # d1.ellipse([left, right], fill = (130,130,130))
 
-    if os.path.exists(sys.argv[1] + "current-8x8.png"):
-        loadIm = Image.open(sys.argv[1] + "current-8x8.png")
-        im.paste(loadIm,(int((MATRIX_HEIGHT - loadIm.size[0]) / 2),0))
+    if os.path.exists(sys.argv[1] + "current-32x32.png"):
+        loadIm = Image.open(sys.argv[1] + "current-32x32.png")
+        #im.paste(loadIm,(int((MATRIX_HEIGHT - loadIm.size[0]) / 2),0))
+        im.paste(loadIm,(0,0))
+
+        with open(sys.argv[1]+'current_weather.json', 'r') as f:
+            try: 
+                array = json.load(f)
+                weather = (array['current']['condition']['text'])
+                msgwidth, msgheight = d1.textsize(weather,font=smallfont)
+                d1.text(((MATRIX_WIDTH - msgwidth) / 2, 32-8), weather, font=smallfont, fill =(0, 0, 120))
+                d1.text(((MATRIX_WIDTH - msgwidth) / 2+1, 32-7), weather, font=smallfont, fill =(0, 0, 0))
+            except:
+                print("Could not decode json!")
 
     # Hour / Minute
     msgwidth, msgheight = d1.textsize(hhmm)
-    d1.text(((MATRIX_WIDTH - msgwidth) / 2, (MATRIX_HEIGHT - msgheight) / 2), hhmm, fill=(0, 0, 0))
+    d1.text((((MATRIX_WIDTH - msgwidth) / 2)+1, 1), hhmm, fill=(0, 0, 0))
+    d1.text(((MATRIX_WIDTH - msgwidth) / 2, 0), hhmm, fill=(150, 150, 150))
 
     # Seconds
     msgwidth, msgheight = d1.textsize(sec)
-    d1.text(((MATRIX_WIDTH - msgwidth) / 2, ((MATRIX_HEIGHT - msgheight) / 2) + msgheight), sec, fill=(0, 0, 0))
+    # d1.text(((MATRIX_WIDTH - msgwidth) / 2, (((MATRIX_HEIGHT - msgheight) / 2) + msgheight)-6), sec, fill=(150, 150, 150))
 
     # hmm.. I may have "wired" my pixels backwards
     im = ImageOps.mirror(im)
