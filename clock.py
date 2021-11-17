@@ -86,28 +86,35 @@ while(True) :
     right   = 32,32
     # d1.ellipse([left, right], fill = (130,130,130))
 
-    if os.path.exists(sys.argv[1] + "current-32x32.png"):
-        loadIm = Image.open(sys.argv[1] + "current-32x32.png")
-        #im.paste(loadIm,(int((MATRIX_HEIGHT - loadIm.size[0]) / 2),0))
-        im.paste(loadIm,(0,0))
+    if os.path.exists(sys.argv[1] + "/current-32x32.png"):
+        try: 
+            loadIm = Image.open(sys.argv[1] + "/current-32x32.png")
+            im.paste(loadIm,(0,0))
+        except:
+            print("Couldn't load image file.. will try again later")       
 
-        with open(sys.argv[1]+'current_weather.json', 'r') as f:
+        with open(sys.argv[1]+'/current_weather.json', 'r') as f:
+            array   = json.load(f)
+            weather = (array['current']['condition']['text'])
+            temp    = int(array['current']['temp_f'])
             try: 
-                array = json.load(f)
-                weather = (array['current']['condition']['text'])
                 msgwidth, msgheight = d1.textsize(weather,font=smallfont)
-                d1.text(((MATRIX_WIDTH - msgwidth) / 2, 32-8), weather, font=smallfont, fill =(0, 0, 120))
-                d1.text(((MATRIX_WIDTH - msgwidth) / 2+1, 32-7), weather, font=smallfont, fill =(0, 0, 0))
+                d1.text(((MATRIX_WIDTH - msgwidth) / 2, MATRIX_HEIGHT - msgheight-2), weather, font=smallfont, fill =(0, 0, 120))
+                msgwidth, msgheight = d1.textsize(str(temp),font=smallfont)
+                msgwidth, msgheight = d1.textsize(str(temp))
+                d1.text(((MATRIX_WIDTH - msgwidth) / 2, (MATRIX_HEIGHT - msgheight) / 2), str(temp), fill =(1, 1, 1))
             except:
                 print("Could not decode json!")
 
     # Hour / Minute
     msgwidth, msgheight = d1.textsize(hhmm)
+
+    # drop shadow
     d1.text((((MATRIX_WIDTH - msgwidth) / 2)+1, 1), hhmm, fill=(0, 0, 0))
     d1.text(((MATRIX_WIDTH - msgwidth) / 2, 0), hhmm, fill=(150, 150, 150))
 
     # Seconds
-    msgwidth, msgheight = d1.textsize(sec)
+    # msgwidth, msgheight = d1.textsize(sec)
     # d1.text(((MATRIX_WIDTH - msgwidth) / 2, (((MATRIX_HEIGHT - msgheight) / 2) + msgheight)-6), sec, fill=(150, 150, 150))
 
     # hmm.. I may have "wired" my pixels backwards
