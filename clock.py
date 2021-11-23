@@ -94,10 +94,11 @@ while(True) :
             print("Couldn't load image file.. will try again later")       
 
         with open(sys.argv[1]+'/current_weather.json', 'r') as f:
-            array   = json.load(f)
-            weather = (array['current']['condition']['text'])
-            temp    = int(array['current']['temp_f'])
+            
             try: 
+                array   = json.load(f)
+                weather = (array['current']['condition']['text'])
+                temp    = int(array['current']['temp_f'])
                 msgwidth, msgheight = d1.textsize(weather,font=smallfont)
                 d1.text(((MATRIX_WIDTH - msgwidth) / 2, MATRIX_HEIGHT - msgheight-2), weather, font=smallfont, fill =(0, 0, 120))
                 msgwidth, msgheight = d1.textsize(str(temp),font=smallfont)

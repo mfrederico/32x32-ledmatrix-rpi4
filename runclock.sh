@@ -1,3 +1,7 @@
-php /home/pi/led/wiring.php > mymatrix.py
-source /home/pi/led/settings.conf
+#!/bin/bash
+cd /home/pi/led/
+ls settings.conf
+pwd
+source settings.conf
+php wiring.php > mymatrix.py
 sudo python3 clock.py ${data} > output.txt
